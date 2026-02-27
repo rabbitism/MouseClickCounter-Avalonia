@@ -51,12 +51,12 @@
                     Spacing="20"
                     Margin="0,30,0,0">
             <Button Content="全国排行榜"
-                    Command="{Binding ShowAllRankCommand}"
+                    Click="OnShowAllRankClick"
                     Width="150"
                     Height="40"
                     FontSize="14" />
             <Button Content="设置"
-                    Command="{Binding ShowConfigCommand}"
+                    Click="OnShowConfigClick"
                     Width="150"
                     Height="40"
                     FontSize="14" />
