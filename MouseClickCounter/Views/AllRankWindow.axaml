@@ -40,10 +40,10 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="排名" Binding="{Binding Rank}" Width="80" />
                 <DataGridTextColumn Header="省份" Binding="{Binding Province}" Width="150" />
-                <DataGridTextColumn Header="设备数" Binding="{Binding DeviceCount, StringFormat='{}{0:N0}'}" Width="120" />
-                <DataGridTextColumn Header="总点击" Binding="{Binding TotalClicks, StringFormat='{}{0:N0}'}" Width="150" />
-                <DataGridTextColumn Header="左键点击" Binding="{Binding TotalLeftClicks, StringFormat='{}{0:N0}'}" Width="150" />
-                <DataGridTextColumn Header="右键点击" Binding="{Binding TotalRightClicks, StringFormat='{}{0:N0}'}" Width="*" />
+                <DataGridTextColumn Header="设备数" Binding="{Binding DeviceCount}" Width="120" />
+                <DataGridTextColumn Header="总点击" Binding="{Binding TotalClicks}" Width="150" />
+                <DataGridTextColumn Header="左键点击" Binding="{Binding TotalLeftClicks}" Width="150" />
+                <DataGridTextColumn Header="右键点击" Binding="{Binding TotalRightClicks}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
 
