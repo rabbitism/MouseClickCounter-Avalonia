@@ -32,6 +32,8 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private long _rightClickCount;
 
+    public long TotalClickCount => LeftClickCount + RightClickCount;
+
     [ObservableProperty]
     private string _rankingText = "全国排名：未参与";
 
@@ -131,6 +133,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         LeftClickCount = _mouseHookService.GetLeftClickCount();
         RightClickCount = _mouseHookService.GetRightClickCount();
+        OnPropertyChanged(nameof(TotalClickCount));
     }
 
     private async Task UpdateRankingDisplay()
@@ -253,7 +256,7 @@ public partial class MainWindowViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task OnRankingClick()
+    private async Task RankingClick()
     {
         if (_currentClickData == null || !_currentClickData.JoinRanking)
         {

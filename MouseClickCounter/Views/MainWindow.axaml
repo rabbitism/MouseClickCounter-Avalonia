@@ -3,34 +3,148 @@
         xmlns:vm="using:MouseClickCounter.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
         x:Class="MouseClickCounter.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Mouse Click Counter"
-        Width="400" Height="300"
-        WindowStartupLocation="CenterScreen">
+        Title="鼠标点击计数器 - Mouse Click Counter"
+        Width="600" Height="450"
+        MinWidth="500" MinHeight="400"
+        WindowStartupLocation="CenterScreen"
+        CanResize="True">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="16">
-        <TextBlock Text="Mouse Click Counter"
-                   FontSize="20"
+    <DockPanel Margin="20">
+        <!-- 标题 -->
+        <TextBlock DockPanel.Dock="Top"
+                   Text="鼠标点击计数器"
+                   FontSize="24"
                    FontWeight="Bold"
-                   HorizontalAlignment="Center" />
-        <TextBlock Text="{Binding ClickCount}"
-                   FontSize="48"
-                   HorizontalAlignment="Center" />
-        <Button Content="Click Me!"
-                Command="{Binding IncrementClickCommand}"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center" />
-        <Button Content="Reset"
-                Command="{Binding ResetClickCommand}"
-                HorizontalAlignment="Stretch"
-                HorizontalContentAlignment="Center" />
-    </StackPanel>
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,20" />
+
+        <!-- 排名信息 - 可点击 -->
+        <Button DockPanel.Dock="Top"
+                Content="{Binding RankingText}"
+                Foreground="{Binding RankingColor}"
+                FontSize="14"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,30"
+                Background="Transparent"
+                BorderThickness="0"
+                Cursor="Hand"
+                Command="{Binding RankingClickCommand}">
+            <Button.Styles>
+                <Style Selector="Button:pointerover /template/ ContentPresenter">
+                    <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
+                </Style>
+            </Button.Styles>
+        </Button>
+
+        <!-- 底部按钮 -->
+        <StackPanel DockPanel.Dock="Bottom"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Spacing="20"
+                    Margin="0,30,0,0">
+            <Button Content="全国排行榜"
+                    Command="{Binding ShowAllRankCommand}"
+                    Width="150"
+                    Height="40"
+                    FontSize="14" />
+            <Button Content="设置"
+                    Command="{Binding ShowConfigCommand}"
+                    Width="150"
+                    Height="40"
+                    FontSize="14" />
+        </StackPanel>
+
+        <!-- 中间内容区 -->
+        <Grid VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左键点击 -->
+            <StackPanel Grid.Row="0" Grid.Column="0"
+                       HorizontalAlignment="Center"
+                       Spacing="10">
+                <TextBlock Text="左键点击"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center" />
+                <Border Background="#F0F0F0"
+                        CornerRadius="8"
+                        Padding="20,15"
+                        MinWidth="200">
+                    <TextBlock Text="{Binding LeftClickCount}"
+                               FontSize="36"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Foreground="#1890ff" />
+                </Border>
+            </StackPanel>
+
+            <!-- 右键点击 -->
+            <StackPanel Grid.Row="0" Grid.Column="1"
+                       HorizontalAlignment="Center"
+                       Spacing="10">
+                <TextBlock Text="右键点击"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center" />
+                <Border Background="#F0F0F0"
+                        CornerRadius="8"
+                        Padding="20,15"
+                        MinWidth="200">
+                    <TextBlock Text="{Binding RightClickCount}"
+                               FontSize="36"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Foreground="#52c41a" />
+                </Border>
+            </StackPanel>
+
+            <!-- 总计 -->
+            <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                       HorizontalAlignment="Center"
+                       Margin="0,20,0,0"
+                       Spacing="10">
+                <TextBlock Text="总计"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center" />
+                <Border Background="#E8F5E9"
+                        CornerRadius="8"
+                        Padding="30,15"
+                        MinWidth="250">
+                    <TextBlock Text="{Binding TotalClickCount, StringFormat='{}{0:N0}'}"
+                               FontSize="42"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"
+                               Foreground="#52c41a" />
+                </Border>
+            </StackPanel>
+
+            <!-- 提示信息 -->
+            <TextBlock Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                       Text="程序会自动统计您的鼠标点击次数"
+                       FontSize="12"
+                       Foreground="Gray"
+                       HorizontalAlignment="Center"
+                       Margin="0,20,0,0" />
+        </Grid>
+    </DockPanel>
 
 </Window>
