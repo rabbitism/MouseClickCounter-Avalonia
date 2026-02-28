@@ -1,0 +1,127 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MouseClickCounter.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="550"
+        x:Class="MouseClickCounter.Views.ConfigWindow"
+        x:DataType="vm:ConfigViewModel"
+        Title="设置 - Settings"
+        Width="500" Height="550"
+        MinWidth="450" MinHeight="500"
+        WindowStartupLocation="CenterOwner"
+        CanResize="False">
+
+    <Design.DataContext>
+        <vm:ConfigViewModel/>
+    </Design.DataContext>
+
+    <ScrollViewer>
+        <StackPanel Margin="30">
+            <!-- 标题 -->
+            <TextBlock Text="设置"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Margin="0,0,0,20" />
+
+            <!-- 服务器设置 -->
+            <TextBlock Text="服务器设置"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,10" />
+            <TextBlock Text="服务器API地址："
+                       FontSize="12"
+                       Margin="0,0,0,5" />
+            <TextBox Text="{Binding ApiUrl}"
+                     Watermark="https://example.com"
+                     Margin="0,0,0,20" />
+
+            <!-- 排行榜设置 -->
+            <TextBlock Text="排行榜设置"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,10,0,10" />
+            <CheckBox Content="加入全国排行榜"
+                      IsChecked="{Binding JoinRanking}"
+                      Margin="0,0,0,5" />
+            <TextBlock Text="启用后将自动同步您的点击数据到服务器参与排名"
+                       FontSize="11"
+                       Foreground="Gray"
+                       TextWrapping="Wrap"
+                       Margin="25,0,0,20" />
+
+            <!-- 数据同步时间 -->
+            <TextBlock Text="数据同步时间间隔"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,10,0,10" />
+            <ComboBox SelectedIndex="{Binding SyncIntervalIndex}"
+                     Margin="0,0,0,5"
+                     Width="200"
+                     HorizontalAlignment="Left">
+                <ComboBoxItem Content="1 分钟" />
+                <ComboBoxItem Content="3 分钟" />
+                <ComboBoxItem Content="5 分钟" />
+                <ComboBoxItem Content="10 分钟" />
+            </ComboBox>
+
+            <TextBlock Text="设置数据同步到服务器的时间间隔"
+                       FontSize="11"
+                       Foreground="Gray"
+                       Margin="0,5,0,20" />
+
+            <!-- 启动设置 -->
+            <TextBlock Text="启动设置"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,10,0,10" />
+            <CheckBox Content="开机自动运行"
+                      IsChecked="{Binding RunOnStartup}"
+                      Margin="0,0,0,5" />
+            <TextBlock Text="程序将在系统启动时自动运行"
+                       FontSize="11"
+                       Foreground="Gray"
+                       TextWrapping="Wrap"
+                       Margin="25,0,0,20" />
+
+            <!-- 数据管理 -->
+            <TextBlock Text="数据管理"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,10,0,10" />
+            <Button Content="重置点击数据"
+                    Command="{Binding ResetClicksCommand}"
+                    Width="150"
+                    Height="35"
+                    Background="#ff4d4f"
+                    Foreground="White"
+                    Margin="0,0,0,20" />
+
+            <!-- 关于 -->
+            <TextBlock Text="关于"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,10,0,10" />
+            <TextBlock Text="GitHub: https://github.com/mrhuo/MouseClickCounter"
+                       FontSize="11"
+                       Foreground="Gray"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,30" />
+
+            <!-- 底部按钮 -->
+            <StackPanel Orientation="Horizontal"
+                       HorizontalAlignment="Right"
+                       Spacing="15">
+                <Button Content="保存"
+                        Command="{Binding SaveCommand}"
+                        Width="100"
+                        Height="35" />
+                <Button Content="取消"
+                        Name="CancelButton"
+                        Width="100"
+                        Height="35" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+
+</Window>
