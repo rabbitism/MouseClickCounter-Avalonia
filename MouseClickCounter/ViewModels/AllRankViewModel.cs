@@ -3,13 +3,15 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MouseClickCounter.Services;
+using MouseClickCounter.Services.Interfaces;
+using static MouseClickCounter.Services.RankingApiService;
 
 namespace MouseClickCounter.ViewModels
 {
     public partial class AllRankViewModel : ViewModelBase
     {
-        private readonly RankingApiService _rankingApiService;
-        private readonly LogService _logService;
+        private readonly IRankingApiService _rankingApiService;
+        private readonly ILogService _logService;
 
         [ObservableProperty]
         private string _statsText = "正在加载数据...";
@@ -20,10 +22,10 @@ namespace MouseClickCounter.ViewModels
         [ObservableProperty]
         private ObservableCollection<ProvinceRankingItem> _rankings = new();
 
-        public AllRankViewModel(RankingApiService rankingApiService)
+        public AllRankViewModel(IRankingApiService rankingApiService, ILogService logService)
         {
             _rankingApiService = rankingApiService;
-            _logService = new LogService();
+            _logService = logService;
 
             _ = LoadDataAsync();
         }

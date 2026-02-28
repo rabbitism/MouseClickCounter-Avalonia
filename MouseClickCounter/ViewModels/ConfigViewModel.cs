@@ -2,15 +2,16 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MouseClickCounter.Services;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.ViewModels
 {
     public partial class ConfigViewModel : ViewModelBase
     {
-        private readonly ConfigManager _configManager;
-        private readonly DataStorageService _dataStorageService;
-        private readonly RankingApiService _rankingApiService;
-        private readonly LogService _logService;
+        private readonly IConfigManager _configManager;
+        private readonly IDataStorageService _dataStorageService;
+        private readonly IRankingApiService _rankingApiService;
+        private readonly ILogService _logService;
 
         [ObservableProperty]
         private string _apiUrl = string.Empty;
@@ -51,12 +52,16 @@ namespace MouseClickCounter.ViewModels
             }
         }
 
-        public ConfigViewModel(ConfigManager configManager)
+        public ConfigViewModel(
+            IConfigManager configManager,
+            IDataStorageService dataStorageService,
+            IRankingApiService rankingApiService,
+            ILogService logService)
         {
             _configManager = configManager;
-            _dataStorageService = new DataStorageService();
-            _rankingApiService = new RankingApiService(configManager);
-            _logService = new LogService();
+            _dataStorageService = dataStorageService;
+            _rankingApiService = rankingApiService;
+            _logService = logService;
 
             LoadConfig();
         }

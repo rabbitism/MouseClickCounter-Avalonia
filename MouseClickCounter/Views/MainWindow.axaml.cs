@@ -3,6 +3,8 @@ using Avalonia.Interactivity;
 using MouseClickCounter.ViewModels;
 using MouseClickCounter.Services;
 using System.ComponentModel;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace MouseClickCounter.Views;
 
@@ -41,8 +43,9 @@ public partial class MainWindow : Window
     // These will be called from button clicks in XAML
     private async void OnShowConfigClick(object? sender, RoutedEventArgs e)
     {
-        var configManager = new ConfigManager();
-        var configViewModel = new ConfigViewModel(configManager);
+        if (App.ServiceProvider == null) return;
+
+        var configViewModel = App.ServiceProvider.GetRequiredService<ConfigViewModel>();
         var configWindow = new ConfigWindow(configViewModel)
         {
             DataContext = configViewModel
@@ -59,9 +62,9 @@ public partial class MainWindow : Window
 
     private async void OnShowAllRankClick(object? sender, RoutedEventArgs e)
     {
-        var configManager = new ConfigManager();
-        var rankingApiService = new RankingApiService(configManager);
-        var allRankViewModel = new AllRankViewModel(rankingApiService);
+        if (App.ServiceProvider == null) return;
+
+        var allRankViewModel = App.ServiceProvider.GetRequiredService<AllRankViewModel>();
         var allRankWindow = new AllRankWindow(allRankViewModel)
         {
             DataContext = allRankViewModel

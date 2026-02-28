@@ -6,17 +6,18 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using MouseClickCounter.Models;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services
 {
     /// <summary>
     /// 排行榜API服务
     /// </summary>
-    public class RankingApiService
+    public class RankingApiService : IRankingApiService
     {
-        private readonly ConfigManager _configManager;
-        private readonly LogService _logService;
-        private HttpClient _httpClient;
+        private readonly IConfigManager _configManager;
+        private readonly ILogService _logService;
+        private readonly HttpClient _httpClient;
 
         // 上次同步的点击次数（用于增量同步）
         private long _lastSyncedLeftClicks = 0;
@@ -25,11 +26,11 @@ namespace MouseClickCounter.Services
         /// <summary>
         /// 创建排行榜API服务实例
         /// </summary>
-        public RankingApiService(ConfigManager configManager)
+        public RankingApiService(IConfigManager configManager, ILogService logService, HttpClient httpClient)
         {
             _configManager = configManager;
-            _logService = new LogService();
-            _httpClient = new HttpClient();
+            _logService = logService;
+            _httpClient = httpClient;
             _httpClient.Timeout = TimeSpan.FromSeconds(30);
         }
 

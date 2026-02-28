@@ -1,10 +1,11 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services
 {
-    public class ConfigManager
+    public class ConfigManager : IConfigManager
     {
         private string _configPath;
         private const string DEFAULT_SERVER_API = "https://exeekfa1x7.sealosbja.site";

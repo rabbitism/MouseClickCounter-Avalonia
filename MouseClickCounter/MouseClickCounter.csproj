@@ -24,6 +24,7 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
     <PackageReference Include="Irihi.Ursa" Version="1.15.0" />
     <PackageReference Include="Irihi.Ursa.Themes.Semi" Version="1.15.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageReference Include="Semi.Avalonia" Version="11.3.7.3" />
   </ItemGroup>
 </Project>

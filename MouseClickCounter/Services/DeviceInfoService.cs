@@ -1,13 +1,14 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services
 {
     /// <summary>
     /// 设备信息服务
     /// </summary>
-    public class DeviceInfoService
+    public class DeviceInfoService : IDeviceInfoService
     {
         /// <summary>
         /// 获取设备信息

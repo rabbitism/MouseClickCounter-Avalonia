@@ -2,13 +2,14 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services
 {
     /// <summary>
     /// 加密服务
     /// </summary>
-    public class EncryptionService
+    public class EncryptionService : IEncryptionService
     {
         private const string ENCRYPTION_KEY = "MouseClickCounter2025!@#";
         private const int KEY_SIZE = 32; // AES-256
