@@ -1,12 +1,13 @@
 using System;
 using System.IO;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services
 {
     /// <summary>
     /// 日志服务
     /// </summary>
-    public class LogService
+    public class LogService : ILogService
     {
         private readonly string _logDirectory;
 

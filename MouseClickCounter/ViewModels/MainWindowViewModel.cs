@@ -5,18 +5,19 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MouseClickCounter.Models;
 using MouseClickCounter.Services;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
     // 服务实例
-    private readonly ConfigManager _configManager;
-    private readonly LogService _logService;
-    private readonly DeviceInfoService _deviceInfoService;
-    private readonly DataStorageService _dataStorageService;
-    private readonly RankingApiService _rankingApiService;
-    private readonly MouseHookService _mouseHookService;
+    private readonly IConfigManager _configManager;
+    private readonly ILogService _logService;
+    private readonly IDeviceInfoService _deviceInfoService;
+    private readonly IDataStorageService _dataStorageService;
+    private readonly IRankingApiService _rankingApiService;
+    private readonly IMouseHookService _mouseHookService;
 
     // 设备信息
     private DeviceInfoService.DeviceInfo? _deviceInfo;
@@ -40,17 +41,23 @@ public partial class MainWindowViewModel : ViewModelBase
     [ObservableProperty]
     private string _rankingColor = "Gray";
 
-    public MainWindowViewModel()
+    public MainWindowViewModel(
+        IConfigManager configManager,
+        ILogService logService,
+        IDeviceInfoService deviceInfoService,
+        IDataStorageService dataStorageService,
+        IRankingApiService rankingApiService,
+        IMouseHookService mouseHookService)
     {
         // 初始化服务
-        _configManager = new ConfigManager();
+        _configManager = configManager;
         _configManager.CreateDefaultConfig();
 
-        _logService = new LogService();
-        _deviceInfoService = new DeviceInfoService();
-        _dataStorageService = new DataStorageService();
-        _rankingApiService = new RankingApiService(_configManager);
-        _mouseHookService = MouseHookService.Instance;
+        _logService = logService;
+        _deviceInfoService = deviceInfoService;
+        _dataStorageService = dataStorageService;
+        _rankingApiService = rankingApiService;
+        _mouseHookService = mouseHookService;
 
         // 初始化设备信息
         InitializeDeviceInfo();

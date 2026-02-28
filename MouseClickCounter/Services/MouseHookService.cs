@@ -1,15 +1,16 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services
 {
     /// <summary>
     /// 鼠标点击监控服务 - 跨平台实现
     /// </summary>
-    public class MouseHookService : IDisposable
+    public class MouseHookService : IMouseHookService
     {
-        private static MouseHookService? _instance;
+        private readonly ILogService _logService;
         private IntPtr _hookID = IntPtr.Zero;
         private LowLevelMouseProc? _proc;
         private bool _isHooked = false;
@@ -38,20 +39,9 @@ namespace MouseClickCounter.Services
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string? lpModuleName);
 
-        private MouseHookService()
+        public MouseHookService(ILogService logService)
         {
-        }
-
-        public static MouseHookService Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new MouseHookService();
-                }
-                return _instance;
-            }
+            _logService = logService;
         }
 
         /// <summary>
@@ -89,13 +79,13 @@ namespace MouseClickCounter.Services
                 {
                     // 在非Windows平台上，我们不能使用钩子
                     // 这里可以考虑使用其他方法，如事件监听
-                    new LogService().WriteInfo("非Windows平台，鼠标钩子功能不可用");
+                    _logService.WriteInfo("非Windows平台，鼠标钩子功能不可用");
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                new LogService().WriteError("安装鼠标钩子失败", ex);
+                _logService.WriteError("安装鼠标钩子失败", ex);
                 return false;
             }
         }

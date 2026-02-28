@@ -1,23 +1,26 @@
 using System;
 using System.IO;
 using MouseClickCounter.Models;
+using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services
 {
     /// <summary>
     /// 数据存储服务
     /// </summary>
-    public class DataStorageService
+    public class DataStorageService : IDataStorageService
     {
-        private readonly EncryptionService _encryptionService;
+        private readonly IEncryptionService _encryptionService;
+        private readonly ILogService _logService;
         private readonly string _dataFilePath;
 
         /// <summary>
         /// 创建数据存储服务实例
         /// </summary>
-        public DataStorageService()
+        public DataStorageService(IEncryptionService encryptionService, ILogService logService)
         {
-            _encryptionService = new EncryptionService();
+            _encryptionService = encryptionService;
+            _logService = logService;
             _dataFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "click_data.enc");
         }
 
@@ -36,7 +39,7 @@ namespace MouseClickCounter.Services
             catch (Exception ex)
             {
                 // 记录错误
-                new LogService().WriteError("保存点击数据失败", ex);
+                _logService.WriteError("保存点击数据失败", ex);
                 return false;
             }
         }
@@ -78,7 +81,7 @@ namespace MouseClickCounter.Services
             catch (Exception ex)
             {
                 // 记录错误
-                new LogService().WriteError("加载点击数据失败", ex);
+                _logService.WriteError("加载点击数据失败", ex);
                 return null;
             }
         }
@@ -99,7 +102,7 @@ namespace MouseClickCounter.Services
             }
             catch (Exception ex)
             {
-                new LogService().WriteError("删除数据文件失败", ex);
+                _logService.WriteError("删除数据文件失败", ex);
                 return false;
             }
         }
