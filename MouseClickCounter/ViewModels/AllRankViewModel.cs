@@ -49,18 +49,18 @@ namespace MouseClickCounter.ViewModels
                     }
 
                     StatsText = $"总参与设备：{data.TotalDevices:N0} | 总点击次数：{data.TotalClicks:N0}";
-                    _logService.WriteInfo($"成功加载 {Rankings.Count} 个省份的排行数据");
+                    await _logService.WriteInfoAsync($"成功加载 {Rankings.Count} 个省份的排行数据");
                 }
                 else
                 {
                     StatsText = "数据加载失败，请检查网络连接或稍后重试";
-                    _logService.WriteError("获取省份排行数据失败");
+                    await _logService.WriteErrorAsync("获取省份排行数据失败");
                 }
             }
             catch (System.Exception ex)
             {
                 StatsText = $"数据加载失败：{ex.Message}";
-                _logService.WriteError("加载省份排行数据时发生错误", ex);
+                await _logService.WriteErrorAsync("加载省份排行数据时发生错误", ex);
             }
             finally
             {

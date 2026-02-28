@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using MouseClickCounter.Models;
 using MouseClickCounter.Services.Interfaces;
 
@@ -27,19 +28,19 @@ namespace MouseClickCounter.Services
         /// <summary>
         /// 保存点击数据
         /// </summary>
-        public bool SaveClickData(ClickData clickData)
+        public async Task<bool> SaveClickDataAsync(ClickData clickData)
         {
             try
             {
                 string plainText = clickData.ToString();
                 string encryptedData = _encryptionService.Encrypt(plainText);
-                File.WriteAllText(_dataFilePath, encryptedData);
+                await File.WriteAllTextAsync(_dataFilePath, encryptedData);
                 return true;
             }
             catch (Exception ex)
             {
                 // 记录错误
-                _logService.WriteError("保存点击数据失败", ex);
+                await _logService.WriteErrorAsync("保存点击数据失败", ex);
                 return false;
             }
         }
@@ -47,7 +48,7 @@ namespace MouseClickCounter.Services
         /// <summary>
         /// 加载点击数据
         /// </summary>
-        public ClickData? LoadClickData()
+        public async Task<ClickData?> LoadClickDataAsync()
         {
             try
             {
@@ -56,7 +57,7 @@ namespace MouseClickCounter.Services
                     return null;
                 }
 
-                string encryptedData = File.ReadAllText(_dataFilePath);
+                string encryptedData = await File.ReadAllTextAsync(_dataFilePath);
 
                 // 检查是否为有效的加密数据
                 if (!_encryptionService.IsValidEncryptedText(encryptedData))
@@ -81,7 +82,7 @@ namespace MouseClickCounter.Services
             catch (Exception ex)
             {
                 // 记录错误
-                _logService.WriteError("加载点击数据失败", ex);
+                await _logService.WriteErrorAsync("加载点击数据失败", ex);
                 return null;
             }
         }
@@ -89,7 +90,7 @@ namespace MouseClickCounter.Services
         /// <summary>
         /// 删除数据文件
         /// </summary>
-        public bool DeleteDataFile()
+        public async Task<bool> DeleteDataFileAsync()
         {
             try
             {
@@ -102,7 +103,7 @@ namespace MouseClickCounter.Services
             }
             catch (Exception ex)
             {
-                _logService.WriteError("删除数据文件失败", ex);
+                await _logService.WriteErrorAsync("删除数据文件失败", ex);
                 return false;
             }
         }

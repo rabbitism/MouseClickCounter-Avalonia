@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services
@@ -22,7 +23,7 @@ namespace MouseClickCounter.Services
         /// <summary>
         /// 写入日志
         /// </summary>
-        public void WriteLog(string message)
+        public async Task WriteLogAsync(string message)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace MouseClickCounter.Services
 
                 string fileName = $"Log_{DateTime.Now:yyyyMMdd}.txt";
                 string fullPath = Path.Combine(logPath, fileName);
-                File.AppendAllText(fullPath, $"[{DateTime.Now:HH:mm:ss}] {message}\r\n");
+                await File.AppendAllTextAsync(fullPath, $"[{DateTime.Now:HH:mm:ss}] {message}\r\n");
             }
             catch
             {
@@ -53,30 +54,30 @@ namespace MouseClickCounter.Services
         /// <summary>
         /// 写入错误日志
         /// </summary>
-        public void WriteError(string errorMessage, Exception? ex = null)
+        public async Task WriteErrorAsync(string errorMessage, Exception? ex = null)
         {
             string message = $"错误: {errorMessage}";
             if (ex != null)
             {
                 message += $"\r\n异常详情: {ex.Message}\r\n堆栈跟踪: {ex.StackTrace}";
             }
-            WriteLog(message);
+            await WriteLogAsync(message);
         }
 
         /// <summary>
         /// 写入信息日志
         /// </summary>
-        public void WriteInfo(string infoMessage)
+        public async Task WriteInfoAsync(string infoMessage)
         {
-            WriteLog($"信息: {infoMessage}");
+            await WriteLogAsync($"信息: {infoMessage}");
         }
 
         /// <summary>
         /// 写入调试日志
         /// </summary>
-        public void WriteDebug(string debugMessage)
+        public async Task WriteDebugAsync(string debugMessage)
         {
-            WriteLog($"调试: {debugMessage}");
+            await WriteLogAsync($"调试: {debugMessage}");
         }
 
         /// <summary>
