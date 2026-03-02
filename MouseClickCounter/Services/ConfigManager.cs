@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using MouseClickCounter.Services.Interfaces;
 
@@ -11,7 +12,7 @@ public class ConfigManager : IConfigManager
     private string _configPath;
     internal const string DEFAULT_SERVER_API = "https://exeekfa1x7.sealosbja.site";
     private ConfigData _config = new();
-    private readonly object _lock = new object();
+    private readonly Lock _lock = new();
 
     public ConfigManager()
     {

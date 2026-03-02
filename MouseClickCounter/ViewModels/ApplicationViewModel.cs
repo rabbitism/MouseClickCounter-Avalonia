@@ -30,6 +30,8 @@ public partial class ApplicationViewModel: ViewModelBase
     {
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+            var mainContext = desktop.MainWindow?.DataContext as MainWindowViewModel;
+            mainContext?.Cleanup();
             desktop.Shutdown();
         }
     }

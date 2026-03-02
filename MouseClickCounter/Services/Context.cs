@@ -8,7 +8,8 @@ namespace MouseClickCounter.Services;
 [JsonSerializable(typeof(ApiResponse<ProvinceRankingResponse>))]
 [JsonSerializable(typeof(RankingData))]
 [JsonSerializable(typeof(ConfigData))]
-public partial class Context : JsonSerializerContext
+[JsonSerializable(typeof(SyncDataRequest))]
+internal partial class Context : JsonSerializerContext
 {
     
 }

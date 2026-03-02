@@ -3,15 +3,10 @@
              xmlns:semi="https://irihi.tech/semi"
              xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
              x:Class="MouseClickCounter.App"
-             xmlns:local="using:MouseClickCounter"
              xmlns:vm="clr-namespace:MouseClickCounter.ViewModels"
              x:DataType="vm:ApplicationViewModel"
              RequestedThemeVariant="Default">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
-
-    <Application.DataTemplates>
-        <local:ViewLocator />
-    </Application.DataTemplates>
 
     <Application.Styles>
         <semi:SemiTheme />

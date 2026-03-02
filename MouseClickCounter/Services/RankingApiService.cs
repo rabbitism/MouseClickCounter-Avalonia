@@ -60,16 +60,16 @@ public class RankingApiService : IRankingApiService
             }
 
             // 构建请求数据（根据API要求，只需要四个参数）
-            var requestData = new
+            var requestData = new SyncDataRequest()
             {
-                deviceId = clickData.DeviceId,
-                deviceName = clickData.DeviceName,
-                leftClicks = leftClicksDelta,
-                rightClicks = rightClicksDelta
+                DeviceId = clickData.DeviceId,
+                DeviceName = clickData.DeviceName,
+                LeftClicks = leftClicksDelta,
+                RightClicks = rightClicksDelta
             };
 
             // 发送HTTP请求
-            string json = JsonSerializer.Serialize(requestData);
+            string json = JsonSerializer.Serialize(requestData, Context.Default.Options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(apiUrl, content);
             string responseContent = await response.Content.ReadAsStringAsync();
@@ -332,4 +332,19 @@ public class ProvinceRankingResponse
     /// </summary>
     [JsonIgnore]
     public long TotalClicks { get { return this.TotalLeftClicks + this.TotalRightClicks; } }
+}
+
+internal class SyncDataRequest
+{
+    [JsonPropertyName("deviceId")]
+    public string DeviceId { get; set; } = string.Empty;
+
+    [JsonPropertyName("deviceName")]
+    public string DeviceName { get; set; } = string.Empty;
+
+    [JsonPropertyName("leftClicks")]
+    public long LeftClicks { get; set; }
+
+    [JsonPropertyName("rightClicks")]
+    public long RightClicks { get; set; }
 }
