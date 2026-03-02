@@ -51,7 +51,8 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         // 初始化服务
         _configManager = configManager;
-        _configManager.CreateDefaultConfig();
+        _ = _configManager.InitializeAsync();
+        _ = _configManager.CreateDefaultConfigAsync();
 
         _logService = logService;
         _deviceInfoService = deviceInfoService;
@@ -69,15 +70,15 @@ public partial class MainWindowViewModel : ViewModelBase
         InitializeTimers();
 
         // 加载保存的数据
-        LoadClickData();
+        _ = LoadClickDataAsync();
 
-        _logService.WriteInfo("MainWindowViewModel 初始化成功");
+        _ = _logService.WriteInfoAsync("MainWindowViewModel 初始化成功");
     }
 
     private void InitializeDeviceInfo()
     {
         _deviceInfo = _deviceInfoService.GetDeviceInfo();
-        _logService.WriteInfo($"设备信息初始化完成：名称={_deviceInfo.DeviceName}, ID={_deviceInfo.DeviceId}");
+        _ = _logService.WriteInfoAsync($"设备信息初始化完成：名称={_deviceInfo.DeviceName}, ID={_deviceInfo.DeviceId}");
     }
 
     private void InitializeMouseHook()
@@ -85,11 +86,11 @@ public partial class MainWindowViewModel : ViewModelBase
         bool success = _mouseHookService.InstallHook();
         if (!success)
         {
-            _logService.WriteError("安装鼠标钩子失败");
+            _ = _logService.WriteErrorAsync("安装鼠标钩子失败");
         }
         else
         {
-            _logService.WriteInfo("鼠标钩子安装成功");
+            _ = _logService.WriteInfoAsync("鼠标钩子安装成功");
         }
     }
 
@@ -111,7 +112,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _dataSyncTimer.Start();
         _localDataTimer.Start();
 
-        _logService.WriteInfo("定时器初始化成功");
+        _ = _logService.WriteInfoAsync("定时器初始化成功");
     }
 
     private void LocalDataTimer_Elapsed(object? sender, ElapsedEventArgs e)
@@ -120,7 +121,7 @@ public partial class MainWindowViewModel : ViewModelBase
         UpdateClickCountDisplay();
 
         // 自动保存数据（防止数据丢失）
-        SaveClickData();
+        _ = SaveClickDataAsync();
     }
 
     private async void DataSyncTimer_Elapsed(object? sender, ElapsedEventArgs e)
@@ -151,7 +152,7 @@ public partial class MainWindowViewModel : ViewModelBase
             if (joinRanking && _deviceInfo != null)
             {
                 // 从服务器获取排行榜数据
-                _logService.WriteInfo("正在从服务器获取排行榜数据...");
+                await _logService.WriteInfoAsync("正在从服务器获取排行榜数据...");
                 var rankingResponse = await _rankingApiService.GetDeviceRanking(_deviceInfo.DeviceId);
                 if (rankingResponse != null)
                 {
@@ -172,11 +173,11 @@ public partial class MainWindowViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            _logService.WriteError("更新排名显示失败", ex);
+            await _logService.WriteErrorAsync("更新排名显示失败", ex);
         }
     }
 
-    private void SaveClickData()
+    private async Task SaveClickDataAsync()
     {
         try
         {
@@ -196,26 +197,26 @@ public partial class MainWindowViewModel : ViewModelBase
                 _currentClickData.Timestamp = DateTime.Now;
 
                 // 保存到文件
-                _dataStorageService.SaveClickData(_currentClickData);
+                await _dataStorageService.SaveClickDataAsync(_currentClickData);
             }
         }
         catch (Exception ex)
         {
-            _logService.WriteError("保存点击数据时发生错误", ex);
+            await _logService.WriteErrorAsync("保存点击数据时发生错误", ex);
         }
     }
 
-    private void LoadClickData()
+    private async Task LoadClickDataAsync()
     {
         try
         {
-            _currentClickData = _dataStorageService.LoadClickData();
+            _currentClickData = await _dataStorageService.LoadClickDataAsync();
             if (_currentClickData != null)
             {
                 // 使用加载的数据
                 _mouseHookService.SetLeftClickCount(_currentClickData.LeftClicks);
                 _mouseHookService.SetRightClickCount(_currentClickData.RightClicks);
-                _logService.WriteInfo("已加载保存的数据");
+                await _logService.WriteInfoAsync("已加载保存的数据");
 
                 // 设置上次同步的点击次数为当前点击次数
                 _rankingApiService.SetLastSyncedClicks(_currentClickData.LeftClicks, _currentClickData.RightClicks);
@@ -231,7 +232,7 @@ public partial class MainWindowViewModel : ViewModelBase
                     _currentClickData.JoinRanking = _configManager.GetJoinRanking();
                 }
 
-                _logService.WriteInfo("未找到保存的数据，已创建新数据");
+                await _logService.WriteInfoAsync("未找到保存的数据，已创建新数据");
             }
 
             // 更新界面显示
@@ -242,14 +243,14 @@ public partial class MainWindowViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            _logService.WriteError("加载数据失败", ex);
+            await _logService.WriteErrorAsync("加载数据失败", ex);
         }
     }
 
     [RelayCommand]
     private async Task ShowAllRank()
     {
-        _logService.WriteInfo("用户点击查看全国排行榜按钮");
+        await _logService.WriteInfoAsync("用户点击查看全国排行榜按钮");
         // This will be handled by the view
         await Task.CompletedTask;
     }
@@ -257,7 +258,7 @@ public partial class MainWindowViewModel : ViewModelBase
     [RelayCommand]
     private async Task ShowConfig()
     {
-        _logService.WriteInfo("用户点击设置按钮");
+        await _logService.WriteInfoAsync("用户点击设置按钮");
         // This will be handled by the view
         await Task.CompletedTask;
     }
@@ -282,12 +283,12 @@ public partial class MainWindowViewModel : ViewModelBase
                 _dataSyncTimer.Stop();
                 _dataSyncTimer.Interval = syncIntervalMinutes * 60 * 1000;
                 _dataSyncTimer.Start();
-                _logService.WriteInfo($"已更新数据同步间隔为 {syncIntervalMinutes} 分钟");
+                _ = _logService.WriteInfoAsync($"已更新数据同步间隔为 {syncIntervalMinutes} 分钟");
             }
         }
         catch (Exception ex)
         {
-            _logService.WriteError("更新数据同步定时器间隔失败", ex);
+            _ = _logService.WriteErrorAsync("更新数据同步定时器间隔失败", ex);
         }
     }
 
@@ -309,14 +310,14 @@ public partial class MainWindowViewModel : ViewModelBase
         try
         {
             _mouseHookService.UninstallHook();
-            SaveClickData();
-            _logService.WriteInfo("程序关闭，已保存数据");
+            _ = SaveClickDataAsync();
+            _ = _logService.WriteInfoAsync("程序关闭，已保存数据");
             _dataSyncTimer?.Stop();
             _localDataTimer?.Stop();
         }
         catch (Exception ex)
         {
-            _logService.WriteError("清理资源时发生错误", ex);
+            _ = _logService.WriteErrorAsync("清理资源时发生错误", ex);
         }
     }
 }

@@ -79,13 +79,13 @@ namespace MouseClickCounter.Services
                 {
                     // 在非Windows平台上，我们不能使用钩子
                     // 这里可以考虑使用其他方法，如事件监听
-                    _logService.WriteInfo("非Windows平台，鼠标钩子功能不可用");
+                    _ = _logService.WriteInfoAsync("非Windows平台，鼠标钩子功能不可用");
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                _logService.WriteError("安装鼠标钩子失败", ex);
+                _ = _logService.WriteErrorAsync("安装鼠标钩子失败", ex);
                 return false;
             }
         }

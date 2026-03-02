@@ -75,32 +75,32 @@ namespace MouseClickCounter.ViewModels
         }
 
         [RelayCommand]
-        private void Save()
+        private async Task Save()
         {
-            _configManager.SetApiUrl(ApiUrl);
-            _configManager.SetJoinRanking(JoinRanking);
-            _configManager.SetRunOnStartup(RunOnStartup);
-            _configManager.SetSyncInterval(SyncInterval);
+            await _configManager.SetApiUrlAsync(ApiUrl);
+            await _configManager.SetJoinRankingAsync(JoinRanking);
+            await _configManager.SetRunOnStartupAsync(RunOnStartup);
+            await _configManager.SetSyncIntervalAsync(SyncInterval);
 
-            _logService.WriteInfo("配置已保存");
+            await _logService.WriteInfoAsync("配置已保存");
         }
 
         [RelayCommand]
         private async Task ResetClicks()
         {
             // 重置点击数据
-            var clickData = _dataStorageService.LoadClickData();
+            var clickData = await _dataStorageService.LoadClickDataAsync();
 
             if (clickData != null)
             {
                 clickData.LeftClicks = 0;
                 clickData.RightClicks = 0;
-                _dataStorageService.SaveClickData(clickData);
+                await _dataStorageService.SaveClickDataAsync(clickData);
 
                 // 重置排行榜API服务的上次同步数据
                 _rankingApiService.ResetLastSyncedClicks();
 
-                _logService.WriteInfo("点击数据已重置为0");
+                await _logService.WriteInfoAsync("点击数据已重置为0");
             }
 
             await Task.CompletedTask;

@@ -49,13 +49,13 @@ namespace MouseClickCounter.Services
                 long leftClicksDelta = clickData.LeftClicks - _lastSyncedLeftClicks;
                 long rightClicksDelta = clickData.RightClicks - _lastSyncedRightClicks;
 
-                _logService.WriteInfo($"正在同步数据到排行榜服务器({apiUrl})... 设备：{clickData.DeviceName} (ID: {clickData.DeviceId})");
-                _logService.WriteInfo($"增量数据：左键 {leftClicksDelta} 次，右键 {rightClicksDelta} 次");
+                await _logService.WriteInfoAsync($"正在同步数据到排行榜服务器({apiUrl})... 设备：{clickData.DeviceName} (ID: {clickData.DeviceId})");
+                await _logService.WriteInfoAsync($"增量数据：左键 {leftClicksDelta} 次，右键 {rightClicksDelta} 次");
 
                 // 检查增量数据，如果为0或小于0，则不同步
                 if (leftClicksDelta <= 0 && rightClicksDelta <= 0)
                 {
-                    _logService.WriteInfo($"增量数据为0或负数，跳过同步");
+                    await _logService.WriteInfoAsync($"增量数据为0或负数，跳过同步");
                     return;
                 }
 
@@ -75,21 +75,21 @@ namespace MouseClickCounter.Services
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    _logService.WriteInfo($"服务器响应：{responseContent}");
+                    await _logService.WriteInfoAsync($"服务器响应：{responseContent}");
 
                     // 同步成功后，更新上次同步的点击次数
                     _lastSyncedLeftClicks = clickData.LeftClicks;
                     _lastSyncedRightClicks = clickData.RightClicks;
-                    _logService.WriteInfo($"同步成功，已更新上次同步的点击次数：左键 {_lastSyncedLeftClicks}，右键 {_lastSyncedRightClicks}");
+                    await _logService.WriteInfoAsync($"同步成功，已更新上次同步的点击次数：左键 {_lastSyncedLeftClicks}，右键 {_lastSyncedRightClicks}");
                 }
                 else
                 {
-                    _logService.WriteError($"服务器返回错误：{response.StatusCode}，内容：{responseContent}");
+                    await _logService.WriteErrorAsync($"服务器返回错误：{response.StatusCode}，内容：{responseContent}");
                 }
             }
             catch (Exception ex)
             {
-                _logService.WriteError($"同步到服务器失败", ex);
+                await _logService.WriteErrorAsync($"同步到服务器失败", ex);
             }
         }
 
@@ -100,7 +100,7 @@ namespace MouseClickCounter.Services
         {
             _lastSyncedLeftClicks = 0;
             _lastSyncedRightClicks = 0;
-            _logService.WriteInfo($"已重置上次同步的点击次数");
+            _ = _logService.WriteInfoAsync($"已重置上次同步的点击次数");
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace MouseClickCounter.Services
         {
             _lastSyncedLeftClicks = leftClicks;
             _lastSyncedRightClicks = rightClicks;
-            _logService.WriteInfo($"已设置上次同步的点击次数：左键 {leftClicks}，右键 {rightClicks}");
+            _ = _logService.WriteInfoAsync($"已设置上次同步的点击次数：左键 {leftClicks}，右键 {rightClicks}");
         }
 
         /// <summary>
@@ -124,28 +124,28 @@ namespace MouseClickCounter.Services
                 string baseUrl = _configManager.GetApiUrl();
                 string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
                 string apiUrl = $"{baseUrl}/device-rank?deviceId={Uri.EscapeDataString(deviceId)}&date={currentDate}";
-                _logService.WriteInfo($"正在获取设备排名... 设备ID: {deviceId}, 日期: {currentDate}");
+                await _logService.WriteInfoAsync($"正在获取设备排名... 设备ID: {deviceId}, 日期: {currentDate}");
 
                 // 发送HTTP请求
                 var response = await _httpClient.GetAsync(apiUrl);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    _logService.WriteInfo($"服务器响应：{responseContent}");
+                    await _logService.WriteInfoAsync($"服务器响应：{responseContent}");
 
                     var apiResponse = JsonSerializer.Deserialize<ApiResponse<RankingData>>(responseContent);
-                    _logService.WriteInfo($"获取排名成功，响应代码：{apiResponse?.Code}，消息：{apiResponse?.Message}");
+                    await _logService.WriteInfoAsync($"获取排名成功，响应代码：{apiResponse?.Code}，消息：{apiResponse?.Message}");
                     return apiResponse?.Data;
                 }
                 else
                 {
-                    _logService.WriteError($"服务器返回错误：{response.StatusCode}，内容：{responseContent}");
+                    await _logService.WriteErrorAsync($"服务器返回错误：{response.StatusCode}，内容：{responseContent}");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                _logService.WriteError($"获取排行榜数据失败", ex);
+                await _logService.WriteErrorAsync($"获取排行榜数据失败", ex);
                 return null;
             }
         }
@@ -181,28 +181,28 @@ namespace MouseClickCounter.Services
                 // 从配置中获取API地址
                 string baseUrl = _configManager.GetApiUrl();
                 string apiUrl = $"{baseUrl}/all-rank";
-                _logService.WriteInfo($"正在获取全国省份排行...");
+                await _logService.WriteInfoAsync($"正在获取全国省份排行...");
 
                 // 发送HTTP请求
                 var response = await _httpClient.GetAsync(apiUrl);
                 string responseContent = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    _logService.WriteInfo($"服务器响应：{responseContent}");
+                    await _logService.WriteInfoAsync($"服务器响应：{responseContent}");
 
                     var apiResponse = JsonSerializer.Deserialize<ApiResponse<ProvinceRankingResponse>>(responseContent);
-                    _logService.WriteInfo($"获取全国省份排行成功，响应代码：{apiResponse?.Code}，消息：{apiResponse?.Message}");
+                    await _logService.WriteInfoAsync($"获取全国省份排行成功，响应代码：{apiResponse?.Code}，消息：{apiResponse?.Message}");
                     return apiResponse?.Data;
                 }
                 else
                 {
-                    _logService.WriteError($"服务器返回错误：{response.StatusCode}，内容：{responseContent}");
+                    await _logService.WriteErrorAsync($"服务器返回错误：{response.StatusCode}，内容：{responseContent}");
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                _logService.WriteError($"获取全国省份排行失败", ex);
+                await _logService.WriteErrorAsync($"获取全国省份排行失败", ex);
                 return null;
             }
         }

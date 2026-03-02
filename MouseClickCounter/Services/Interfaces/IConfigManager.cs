@@ -1,15 +1,18 @@
+using System.Threading.Tasks;
+
 namespace MouseClickCounter.Services.Interfaces
 {
     public interface IConfigManager
     {
-        void CreateDefaultConfig();
+        Task InitializeAsync();
+        Task CreateDefaultConfigAsync();
         string GetApiUrl();
-        void SetApiUrl(string apiUrl);
+        Task SetApiUrlAsync(string apiUrl);
         bool GetJoinRanking();
-        void SetJoinRanking(bool joinRanking);
+        Task SetJoinRankingAsync(bool joinRanking);
         bool GetRunOnStartup();
-        void SetRunOnStartup(bool runOnStartup);
+        Task SetRunOnStartupAsync(bool runOnStartup);
         int GetSyncInterval();
-        void SetSyncInterval(int minutes);
+        Task SetSyncIntervalAsync(int minutes);
     }
 }

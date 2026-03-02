@@ -1,13 +1,14 @@
 using System;
+using System.Threading.Tasks;
 
 namespace MouseClickCounter.Services.Interfaces
 {
     public interface ILogService
     {
-        void WriteLog(string message);
-        void WriteError(string errorMessage, Exception? ex = null);
-        void WriteInfo(string infoMessage);
-        void WriteDebug(string debugMessage);
+        Task WriteLogAsync(string message);
+        Task WriteErrorAsync(string errorMessage, Exception? ex = null);
+        Task WriteInfoAsync(string infoMessage);
+        Task WriteDebugAsync(string debugMessage);
         bool LogDirectoryExists();
         string GetTodayLogFilePath();
     }
