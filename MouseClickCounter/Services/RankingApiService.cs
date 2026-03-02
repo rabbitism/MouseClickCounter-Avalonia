@@ -42,12 +42,12 @@ public class RankingApiService : IRankingApiService
         try
         {
             // 从配置中获取API地址
-            string baseUrl = _configManager.GetApiUrl();
-            string apiUrl = $"{baseUrl}/sync-clicks";
+            var baseUrl = _configManager.GetApiUrl();
+            var apiUrl = $"{baseUrl}/sync-clicks";
 
             // 计算增量（本次点击次数减去上次同步的点击次数）
-            long leftClicksDelta = clickData.LeftClicks - _lastSyncedLeftClicks;
-            long rightClicksDelta = clickData.RightClicks - _lastSyncedRightClicks;
+            var leftClicksDelta = clickData.LeftClicks - _lastSyncedLeftClicks;
+            var rightClicksDelta = clickData.RightClicks - _lastSyncedRightClicks;
 
             await _logService.WriteInfoAsync($"正在同步数据到排行榜服务器({apiUrl})... 设备：{clickData.DeviceName} (ID: {clickData.DeviceId})");
             await _logService.WriteInfoAsync($"增量数据：左键 {leftClicksDelta} 次，右键 {rightClicksDelta} 次");
@@ -69,10 +69,10 @@ public class RankingApiService : IRankingApiService
             };
 
             // 发送HTTP请求
-            string json = JsonSerializer.Serialize(requestData, Context.Default.Options);
+            var json = JsonSerializer.Serialize(requestData, Context.Default.Options);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _httpClient.PostAsync(apiUrl, content);
-            string responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
                 await _logService.WriteInfoAsync($"服务器响应：{responseContent}");
@@ -121,14 +121,14 @@ public class RankingApiService : IRankingApiService
         try
         {
             // 从配置中获取API地址，包含当前日期
-            string baseUrl = _configManager.GetApiUrl();
-            string currentDate = DateTime.Now.ToString("yyyy-MM-dd");
-            string apiUrl = $"{baseUrl}/device-rank?deviceId={Uri.EscapeDataString(deviceId)}&date={currentDate}";
+            var baseUrl = _configManager.GetApiUrl();
+            var currentDate = DateTime.Now.ToString("yyyy-MM-dd");
+            var apiUrl = $"{baseUrl}/device-rank?deviceId={Uri.EscapeDataString(deviceId)}&date={currentDate}";
             await _logService.WriteInfoAsync($"正在获取设备排名... 设备ID: {deviceId}, 日期: {currentDate}");
 
             // 发送HTTP请求
             var response = await _httpClient.GetAsync(apiUrl);
-            string responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
                 await _logService.WriteInfoAsync($"服务器响应：{responseContent}");
@@ -158,8 +158,8 @@ public class RankingApiService : IRankingApiService
         try
         {
             // 从配置中获取API地址进行检查
-            string baseUrl = _configManager.GetApiUrl();
-            string apiUrl = $"{baseUrl}/sync-clicks";
+            var baseUrl = _configManager.GetApiUrl();
+            var apiUrl = $"{baseUrl}/sync-clicks";
             // 发送HEAD请求检查连接（更轻量）
             var request = new HttpRequestMessage(HttpMethod.Head, apiUrl);
             var response = await _httpClient.SendAsync(request);
@@ -179,13 +179,13 @@ public class RankingApiService : IRankingApiService
         try
         {
             // 从配置中获取API地址
-            string baseUrl = _configManager.GetApiUrl();
-            string apiUrl = $"{baseUrl}/all-rank";
+            var baseUrl = _configManager.GetApiUrl();
+            var apiUrl = $"{baseUrl}/all-rank";
             await _logService.WriteInfoAsync($"正在获取全国省份排行...");
 
             // 发送HTTP请求
             var response = await _httpClient.GetAsync(apiUrl);
-            string responseContent = await response.Content.ReadAsStringAsync();
+            var responseContent = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
                 await _logService.WriteInfoAsync($"服务器响应：{responseContent}");
@@ -277,7 +277,7 @@ public class ProvinceRankingItem
     /// 总点击次数
     /// </summary>
     [JsonIgnore]
-    public long TotalClicks { get { return this.TotalLeftClicks + this.TotalRightClicks; } }
+    public long TotalClicks { get { return TotalLeftClicks + TotalRightClicks; } }
 
     /// <summary>
     /// 左键点击次数
@@ -331,7 +331,7 @@ public class ProvinceRankingResponse
     /// 总点击次数
     /// </summary>
     [JsonIgnore]
-    public long TotalClicks { get { return this.TotalLeftClicks + this.TotalRightClicks; } }
+    public long TotalClicks { get { return TotalLeftClicks + TotalRightClicks; } }
 }
 
 internal class SyncDataRequest

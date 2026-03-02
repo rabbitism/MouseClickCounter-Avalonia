@@ -32,8 +32,8 @@ public class DataStorageService : IDataStorageService
     {
         try
         {
-            string plainText = clickData.ToString();
-            string encryptedData = _encryptionService.Encrypt(plainText);
+            var plainText = clickData.ToString();
+            var encryptedData = _encryptionService.Encrypt(plainText);
             await File.WriteAllTextAsync(_dataFilePath, encryptedData);
             return true;
         }
@@ -57,7 +57,7 @@ public class DataStorageService : IDataStorageService
                 return null;
             }
 
-            string encryptedData = await File.ReadAllTextAsync(_dataFilePath);
+            var encryptedData = await File.ReadAllTextAsync(_dataFilePath);
 
             // 检查是否为有效的加密数据
             if (!_encryptionService.IsValidEncryptedText(encryptedData))
@@ -67,7 +67,7 @@ public class DataStorageService : IDataStorageService
                 return null;
             }
 
-            string decryptedData = _encryptionService.Decrypt(encryptedData);
+            var decryptedData = _encryptionService.Decrypt(encryptedData);
 
             // 检查解密是否成功
             if (decryptedData == encryptedData)

@@ -27,7 +27,7 @@ public class LogService : ILogService
     {
         try
         {
-            string logPath = _logDirectory;
+            var logPath = _logDirectory;
             if (!Directory.Exists(logPath))
             {
                 try
@@ -41,8 +41,8 @@ public class LogService : ILogService
                 }
             }
 
-            string fileName = $"Log_{DateTime.Now:yyyyMMdd}.txt";
-            string fullPath = Path.Combine(logPath, fileName);
+            var fileName = $"Log_{DateTime.Now:yyyyMMdd}.txt";
+            var fullPath = Path.Combine(logPath, fileName);
             await File.AppendAllTextAsync(fullPath, $"[{DateTime.Now:HH:mm:ss}] {message}\r\n");
         }
         catch
@@ -56,7 +56,7 @@ public class LogService : ILogService
     /// </summary>
     public async Task WriteErrorAsync(string errorMessage, Exception? ex = null)
     {
-        string message = $"错误: {errorMessage}";
+        var message = $"错误: {errorMessage}";
         if (ex != null)
         {
             message += $"\r\n异常详情: {ex.Message}\r\n堆栈跟踪: {ex.StackTrace}";
@@ -93,7 +93,7 @@ public class LogService : ILogService
     /// </summary>
     public string GetTodayLogFilePath()
     {
-        string fileName = $"Log_{DateTime.Now:yyyyMMdd}.txt";
+        var fileName = $"Log_{DateTime.Now:yyyyMMdd}.txt";
         return Path.Combine(_logDirectory, fileName);
     }
 }

@@ -21,17 +21,17 @@ public class EncryptionService : IEncryptionService
     {
         try
         {
-            using (Aes aes = Aes.Create())
+            using (var aes = Aes.Create())
             {
                 aes.Key = GetKey();
                 aes.IV = new byte[16]; // 简单实现，实际应该使用随机IV
 
-                ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-                using (MemoryStream ms = new MemoryStream())
+                var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+                using (var ms = new MemoryStream())
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                    using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
                     {
-                        using (StreamWriter sw = new StreamWriter(cs))
+                        using (var sw = new StreamWriter(cs))
                         {
                             sw.Write(plainText);
                         }
@@ -53,19 +53,19 @@ public class EncryptionService : IEncryptionService
     {
         try
         {
-            using (Aes aes = Aes.Create())
+            using (var aes = Aes.Create())
             {
                 aes.Key = GetKey();
                 aes.IV = new byte[16];
 
-                ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-                byte[] cipherBytes = Convert.FromBase64String(cipherText);
+                var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+                var cipherBytes = Convert.FromBase64String(cipherText);
 
-                using (MemoryStream ms = new MemoryStream(cipherBytes))
+                using (var ms = new MemoryStream(cipherBytes))
                 {
-                    using (CryptoStream cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                    using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
                     {
-                        using (StreamReader sr = new StreamReader(cs))
+                        using (var sr = new StreamReader(cs))
                         {
                             return sr.ReadToEnd();
                         }
@@ -85,14 +85,14 @@ public class EncryptionService : IEncryptionService
     private byte[] GetKey()
     {
         // 将密钥填充或截断到指定长度
-        byte[] keyBytes = Encoding.UTF8.GetBytes(ENCRYPTION_KEY);
-        byte[] result = new byte[KEY_SIZE];
+        var keyBytes = Encoding.UTF8.GetBytes(ENCRYPTION_KEY);
+        var result = new byte[KEY_SIZE];
 
-        int length = Math.Min(keyBytes.Length, KEY_SIZE);
+        var length = Math.Min(keyBytes.Length, KEY_SIZE);
         Array.Copy(keyBytes, result, length);
 
         // 如果密钥太短，用0填充
-        for (int i = length; i < KEY_SIZE; i++)
+        for (var i = length; i < KEY_SIZE; i++)
         {
             result[i] = 0;
         }
@@ -111,7 +111,7 @@ public class EncryptionService : IEncryptionService
         try
         {
             // 检查是否为有效的Base64字符串
-            byte[] data = Convert.FromBase64String(text);
+            var data = Convert.FromBase64String(text);
             return data.Length > 0;
         }
         catch

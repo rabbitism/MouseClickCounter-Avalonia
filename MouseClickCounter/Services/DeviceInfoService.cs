@@ -23,13 +23,13 @@ public class DeviceInfoService : IDeviceInfoService
             deviceInfo.DeviceName = Environment.MachineName;
 
             // 生成设备唯一ID（基于计算机名和硬件信息）
-            string userName = Environment.UserName;
-            string osVersion = Environment.OSVersion.VersionString;
-            string combined = $"{deviceInfo.DeviceName}_{userName}_{osVersion}";
+            var userName = Environment.UserName;
+            var osVersion = Environment.OSVersion.VersionString;
+            var combined = $"{deviceInfo.DeviceName}_{userName}_{osVersion}";
 
-            using (SHA256 sha256 = SHA256.Create())
+            using (var sha256 = SHA256.Create())
             {
-                byte[] hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(combined));
+                var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(combined));
                 deviceInfo.DeviceId = BitConverter.ToString(hash).Replace("-", "").Substring(0, 16);
             }
 

@@ -78,22 +78,22 @@ public class ClickData
             }
             else if (line.StartsWith("TotalLeftClicks:"))
             {
-                long.TryParse(line.Substring("TotalLeftClicks:".Length).Trim(), out long leftClicks);
+                long.TryParse(line.Substring("TotalLeftClicks:".Length).Trim(), out var leftClicks);
                 clickData.LeftClicks = leftClicks;
             }
             else if (line.StartsWith("TotalRightClicks:"))
             {
-                long.TryParse(line.Substring("TotalRightClicks:".Length).Trim(), out long rightClicks);
+                long.TryParse(line.Substring("TotalRightClicks:".Length).Trim(), out var rightClicks);
                 clickData.RightClicks = rightClicks;
             }
             else if (line.StartsWith("JoinRanking:"))
             {
-                bool.TryParse(line.Substring("JoinRanking:".Length).Trim(), out bool joinRanking);
+                bool.TryParse(line.Substring("JoinRanking:".Length).Trim(), out var joinRanking);
                 clickData.JoinRanking = joinRanking;
             }
             else if (line.StartsWith("Timestamp:"))
             {
-                if (DateTime.TryParse(line.Substring("Timestamp:".Length).Trim(), out DateTime timestamp))
+                if (DateTime.TryParse(line.Substring("Timestamp:".Length).Trim(), out var timestamp))
                 {
                     clickData.Timestamp = timestamp;
                 }

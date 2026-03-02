@@ -58,8 +58,8 @@ public class MouseHookService : IMouseHookService
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 _proc = HookCallback;
-                using (Process curProcess = Process.GetCurrentProcess())
-                using (ProcessModule? curModule = curProcess.MainModule)
+                using (var curProcess = Process.GetCurrentProcess())
+                using (var curModule = curProcess.MainModule)
                 {
                     if (curModule != null)
                     {

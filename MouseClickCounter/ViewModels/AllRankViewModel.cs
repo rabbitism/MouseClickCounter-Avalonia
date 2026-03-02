@@ -38,7 +38,7 @@ public partial class AllRankViewModel : ViewModelBase, IDialogContext
             if (data != null)
             {
                 Rankings.Clear();
-                int rank = 1;
+                var rank = 1;
                 foreach (var item in data.NationalRankList)
                 {
                     item.Rank = rank++;

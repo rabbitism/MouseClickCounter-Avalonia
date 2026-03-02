@@ -86,21 +86,14 @@ public partial class MainWindowViewModel : ViewModelBase
 
     private void InitializeMouseHook()
     {
-        bool success = _mouseHookService.InstallHook();
-        if (!success)
-        {
-            _ = _logService.WriteErrorAsync("安装鼠标钩子失败");
-        }
-        else
-        {
-            _ = _logService.WriteInfoAsync("鼠标钩子安装成功");
-        }
+        var success = _mouseHookService.InstallHook();
+        _ = success ? _logService.WriteInfoAsync("鼠标钩子安装成功") : _logService.WriteErrorAsync("安装鼠标钩子失败");
     }
 
     private void InitializeTimers()
     {
         // 初始化数据同步定时器（使用配置的刷新时间，仅用于服务器同步）
-        int syncIntervalMinutes = _configManager.GetSyncInterval();
+        var syncIntervalMinutes = _configManager.GetSyncInterval();
         _dataSyncTimer = new Timer(syncIntervalMinutes * 60 * 1000);
         _dataSyncTimer.Elapsed += DataSyncTimer_Elapsed;
 
@@ -130,7 +123,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private async void DataSyncTimer_Elapsed(object? sender, ElapsedEventArgs e)
     {
         // 如果加入了排行榜，同步到服务器并获取最新排名
-        if (_currentClickData != null && _currentClickData.JoinRanking)
+        if (_currentClickData is { JoinRanking: true })
         {
             // 同步数据到服务器
             await _rankingApiService.SyncToRankingServer(_currentClickData);
@@ -151,7 +144,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         try
         {
-            bool joinRanking = _configManager.GetJoinRanking();
+            var joinRanking = _configManager.GetJoinRanking();
             if (joinRanking && _deviceInfo != null)
             {
                 // 从服务器获取排行榜数据
@@ -184,10 +177,7 @@ public partial class MainWindowViewModel : ViewModelBase
     {
         try
         {
-            if (_currentClickData == null)
-            {
-                _currentClickData = new ClickData();
-            }
+            _currentClickData ??= new ClickData();
 
             if (_deviceInfo != null)
             {
@@ -285,7 +275,7 @@ public partial class MainWindowViewModel : ViewModelBase
         {
             if (_dataSyncTimer != null)
             {
-                int syncIntervalMinutes = _configManager.GetSyncInterval();
+                var syncIntervalMinutes = _configManager.GetSyncInterval();
                 _dataSyncTimer.Stop();
                 _dataSyncTimer.Interval = syncIntervalMinutes * 60 * 1000;
                 _dataSyncTimer.Start();

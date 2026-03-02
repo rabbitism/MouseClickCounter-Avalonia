@@ -9,7 +9,7 @@ namespace MouseClickCounter.Services;
 
 public class ConfigManager : IConfigManager
 {
-    private string _configPath;
+    private readonly string _configPath;
     internal const string DEFAULT_SERVER_API = "https://exeekfa1x7.sealosbja.site";
     private ConfigData _config = new();
     private readonly Lock _lock = new();
@@ -30,7 +30,7 @@ public class ConfigManager : IConfigManager
         {
             if (File.Exists(_configPath))
             {
-                string json = await File.ReadAllTextAsync(_configPath);
+                var json = await File.ReadAllTextAsync(_configPath);
                 var config = JsonSerializer.Deserialize<ConfigData>(json, Context.Default.Options);
                 if (config != null)
                 {
@@ -70,7 +70,7 @@ public class ConfigManager : IConfigManager
 
             var options = Context.Default.Options; // new JsonSerializerOptions { WriteIndented = true };
             options.WriteIndented = true;
-            string json = JsonSerializer.Serialize(configToSave, options);
+            var json = JsonSerializer.Serialize(configToSave, options);
             await File.WriteAllTextAsync(_configPath, json);
         }
         catch
