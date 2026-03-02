@@ -20,8 +20,8 @@ namespace MouseClickCounter.Services
         private readonly HttpClient _httpClient;
 
         // 上次同步的点击次数（用于增量同步）
-        private long _lastSyncedLeftClicks = 0;
-        private long _lastSyncedRightClicks = 0;
+        private long _lastSyncedLeftClicks;
+        private long _lastSyncedRightClicks;
 
         /// <summary>
         /// 创建排行榜API服务实例
@@ -307,7 +307,7 @@ namespace MouseClickCounter.Services
         /// 省份排行列表
         /// </summary>
         [JsonPropertyName("nationalRankList")]
-        public List<ProvinceRankingItem> NationalRankList { get; set; } = new();
+        public List<ProvinceRankingItem> NationalRankList { get; set; } = [];
 
         /// <summary>
         /// 总参与设备数

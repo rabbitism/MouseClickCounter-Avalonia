@@ -118,13 +118,13 @@ namespace MouseClickCounter.ViewModels
         private async Task SaveAndClose()
         {
             await Save();
-            RequestClose?.Invoke(this, EventArgs.Empty);
+            RequestClose?.Invoke(this, null);
         }
 
         [RelayCommand]
         private void CloseDialog()
         {
-            RequestClose?.Invoke(this, EventArgs.Empty);
+            RequestClose?.Invoke(this, null);
         }
     }
 }

@@ -1,5 +1,4 @@
-using Avalonia.Controls;
-using Avalonia.Interactivity;
+using System.Threading.Tasks;
 using MouseClickCounter.ViewModels;
 using Ursa.Controls;
 
@@ -7,22 +6,14 @@ namespace MouseClickCounter.Views;
 
 public partial class MainWindow : UrsaWindow
 {
-    private MainWindowViewModel? _viewModel;
-
     public MainWindow()
     {
         InitializeComponent();
-        Loaded += OnWindowLoaded;
-        Closing += OnWindowClosing;
     }
 
-    private void OnWindowLoaded(object? sender, RoutedEventArgs e)
+    protected override Task<bool> CanClose()
     {
-        _viewModel = DataContext as MainWindowViewModel;
-    }
-
-    private void OnWindowClosing(object? sender, WindowClosingEventArgs e)
-    {
-        _viewModel?.Cleanup();
+        (DataContext as MainWindowViewModel)?.Cleanup();
+        return base.CanClose();
     }
 }

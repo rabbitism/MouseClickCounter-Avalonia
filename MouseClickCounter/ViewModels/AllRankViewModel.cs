@@ -12,17 +12,14 @@ namespace MouseClickCounter.ViewModels
 {
     public partial class AllRankViewModel : ViewModelBase, IDialogContext
     {
+        public event EventHandler<object?>? RequestClose;
+
         private readonly IRankingApiService _rankingApiService;
         private readonly ILogService _logService;
-        
-        [ObservableProperty]
-        private string _statsText = "正在加载数据...";
 
-        [ObservableProperty]
-        private bool _isLoading = true;
+        [ObservableProperty] private string _statsText = "正在加载数据...";
 
-        [ObservableProperty]
-        private ObservableCollection<ProvinceRankingItem> _rankings = new();
+        [ObservableProperty] private ObservableCollection<ProvinceRankingItem> _rankings = [];
 
         public AllRankViewModel(IRankingApiService rankingApiService, ILogService logService)
         {
@@ -36,11 +33,10 @@ namespace MouseClickCounter.ViewModels
         {
             try
             {
-                IsLoading = true;
                 StatsText = "正在加载数据...";
 
                 var data = await _rankingApiService.GetAllProvinceRanking();
-                if (data != null && data.NationalRankList != null)
+                if (data != null)
                 {
                     Rankings.Clear();
                     int rank = 1;
@@ -59,14 +55,10 @@ namespace MouseClickCounter.ViewModels
                     await _logService.WriteErrorAsync("获取省份排行数据失败");
                 }
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 StatsText = $"数据加载失败：{ex.Message}";
                 await _logService.WriteErrorAsync("加载省份排行数据时发生错误", ex);
-            }
-            finally
-            {
-                IsLoading = false;
             }
         }
 
@@ -86,7 +78,5 @@ namespace MouseClickCounter.ViewModels
         {
             RequestClose?.Invoke(this, null);
         }
-
-        public event EventHandler<object?>? RequestClose;
     }
 }

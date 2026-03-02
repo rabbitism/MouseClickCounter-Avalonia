@@ -1,55 +1,66 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:MouseClickCounter.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
-        Width="800"
-        x:Class="MouseClickCounter.Views.AllRankDialog"
-        x:DataType="vm:AllRankViewModel">
-
-    <Design.DataContext>
-        <vm:AllRankViewModel/>
-    </Design.DataContext>
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MouseClickCounter.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800"
+             d:DesignHeight="600"
+             x:Class="MouseClickCounter.Views.AllRankDialog"
+             x:DataType="vm:AllRankViewModel">
 
     <DockPanel>
         <!-- 顶部工具栏 -->
         <StackPanel DockPanel.Dock="Top"
-                   Orientation="Horizontal"
-                   Spacing="15">
-            <Button Content="刷新数据"
-                    Command="{Binding RefreshCommand}"
-                    IsEnabled="{Binding !IsLoading}" />
+                    Orientation="Horizontal"
+                    Spacing="15"
+                    Margin="0 0 0 16">
+            
             <TextBlock Text="{Binding StatsText}"
-                      VerticalAlignment="Center"
-                      FontSize="12"
-                      Foreground="Gray" />
+                       VerticalAlignment="Center"
+                       FontSize="12"
+                       Classes="Tertiary" />
         </StackPanel>
 
         <!-- 数据表格 -->
         <DataGrid DockPanel.Dock="Top"
-                 ItemsSource="{Binding Rankings}"
-                 IsReadOnly="True"
-                 AutoGenerateColumns="False"
-                 GridLinesVisibility="Horizontal"
-                 Margin="15,0,15,15">
+                  ItemsSource="{Binding Rankings}"
+                  IsReadOnly="True"
+                  HorizontalAlignment="Center"
+                  AutoGenerateColumns="False"
+                  GridLinesVisibility="Horizontal">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="排名" Binding="{Binding Rank}" Width="80" />
-                <DataGridTextColumn Header="省份" Binding="{Binding Province}" Width="150" />
-                <DataGridTextColumn Header="设备数" Binding="{Binding DeviceCount}" Width="120" />
-                <DataGridTextColumn Header="总点击" Binding="{Binding TotalClicks}" Width="150" />
-                <DataGridTextColumn Header="左键点击" Binding="{Binding TotalLeftClicks}" Width="150" />
-                <DataGridTextColumn Header="右键点击" Binding="{Binding TotalRightClicks}" Width="*" />
+                <DataGridTextColumn Header="排名"
+                                    Binding="{Binding Rank}"
+                                    Width="Auto" />
+                <DataGridTextColumn Header="省份"
+                                    Binding="{Binding Province}"
+                                    Width="Auto" />
+                <DataGridTextColumn Header="设备数"
+                                    Binding="{Binding DeviceCount}"
+                                    Width="Auto" />
+                <DataGridTextColumn Header="总点击"
+                                    Binding="{Binding TotalClicks}"
+                                    Width="Auto" />
+                <DataGridTextColumn Header="左键点击"
+                                    Binding="{Binding TotalLeftClicks}"
+                                    Width="Auto" />
+                <DataGridTextColumn Header="右键点击"
+                                    Binding="{Binding TotalRightClicks}"
+                                    Width="Auto" />
             </DataGrid.Columns>
         </DataGrid>
 
-        <!-- 底部按钮 -->
-        <Button DockPanel.Dock="Bottom"
-                Content="关闭"
-                Command="{Binding CloseDialogCommand}"
-                Width="100"
-                Height="35"
-                HorizontalAlignment="Right" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="16" Margin="0 16 0 0">
+            <Button Content="刷新数据"
+                    Width="100"
+                    Theme="{DynamicResource SolidButton}"
+                    Command="{Binding RefreshCommand}" />
+            <Button DockPanel.Dock="Bottom"
+                    Content="关闭"
+                    Command="{Binding CloseDialogCommand}"
+                    Width="100"
+                    HorizontalAlignment="Right" />
+        </StackPanel>
     </DockPanel>
 
 </UserControl>
