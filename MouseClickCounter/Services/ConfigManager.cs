@@ -169,8 +169,8 @@ namespace MouseClickCounter.Services
         private class ConfigData
         {
             public string ApiUrl { get; set; } = DEFAULT_SERVER_API;
-            public bool JoinRanking { get; set; } = false;
-            public bool RunOnStartup { get; set; } = false;
+            public bool JoinRanking { get; set; }
+            public bool RunOnStartup { get; set; }
             public int SyncInterval { get; set; } = 5;
         }
     }

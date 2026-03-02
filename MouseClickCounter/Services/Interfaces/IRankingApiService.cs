@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using MouseClickCounter.Models;
-using static MouseClickCounter.Services.RankingApiService;
 
 namespace MouseClickCounter.Services.Interfaces
 {

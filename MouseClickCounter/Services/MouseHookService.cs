@@ -13,11 +13,11 @@ namespace MouseClickCounter.Services
         private readonly ILogService _logService;
         private IntPtr _hookID = IntPtr.Zero;
         private LowLevelMouseProc? _proc;
-        private bool _isHooked = false;
+        private bool _isHooked;
 
         // 计数变量
-        private long _leftClickCount = 0;
-        private long _rightClickCount = 0;
+        private long _leftClickCount;
+        private long _rightClickCount;
 
         // Windows API声明
         private delegate IntPtr LowLevelMouseProc(int nCode, IntPtr wParam, IntPtr lParam);
@@ -112,11 +112,11 @@ namespace MouseClickCounter.Services
             {
                 if (nCode >= 0)
                 {
-                    if (wParam == (IntPtr)WM_LBUTTONDOWN)
+                    if (wParam == WM_LBUTTONDOWN)
                     {
                         System.Threading.Interlocked.Increment(ref _leftClickCount);
                     }
-                    else if (wParam == (IntPtr)WM_RBUTTONDOWN)
+                    else if (wParam == WM_RBUTTONDOWN)
                     {
                         System.Threading.Interlocked.Increment(ref _rightClickCount);
                     }

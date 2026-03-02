@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Avalonia.Controls;
 using Microsoft.Extensions.DependencyInjection;
 using MouseClickCounter.Services.Interfaces;
 using MouseClickCounter.ViewModels;

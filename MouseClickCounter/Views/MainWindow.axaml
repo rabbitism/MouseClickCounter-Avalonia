@@ -10,14 +10,17 @@
               x:DataType="vm:MainWindowViewModel"
               Icon="/Assets/avalonia-logo.ico"
               Title="鼠标点击计数器 - Mouse Click Counter"
-              FontFamily="Mircosoft YaHei"
+              FontFamily="微软雅黑"
               Width="400" Height="240"
               MinWidth="400" MinHeight="240"
               WindowStartupLocation="CenterScreen"
+              CanMinimize="False"
+              CanMaximize="False"
               CanResize="False">
     <u:UrsaWindow.LeftContent>
         <TextBlock
             Text="鼠标点击计数器"
+            IsHitTestVisible="False"
             Margin="8"
             FontWeight="Bold" />
     </u:UrsaWindow.LeftContent>

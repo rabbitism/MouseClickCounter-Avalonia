@@ -6,7 +6,6 @@ using CommunityToolkit.Mvvm.Input;
 using Irihi.Avalonia.Shared.Contracts;
 using MouseClickCounter.Services;
 using MouseClickCounter.Services.Interfaces;
-using static MouseClickCounter.Services.RankingApiService;
 
 namespace MouseClickCounter.ViewModels
 {
