@@ -18,6 +18,7 @@ public partial class MainWindowViewModel : ViewModelBase
     private readonly IDataStorageService _dataStorageService;
     private readonly IRankingApiService _rankingApiService;
     private readonly IMouseHookService _mouseHookService;
+    private readonly IDialogService _dialogService;
 
     // 设备信息
     private DeviceInfoService.DeviceInfo? _deviceInfo;
@@ -47,7 +48,8 @@ public partial class MainWindowViewModel : ViewModelBase
         IDeviceInfoService deviceInfoService,
         IDataStorageService dataStorageService,
         IRankingApiService rankingApiService,
-        IMouseHookService mouseHookService)
+        IMouseHookService mouseHookService,
+        IDialogService dialogService)
     {
         // 初始化服务
         _configManager = configManager;
@@ -59,6 +61,7 @@ public partial class MainWindowViewModel : ViewModelBase
         _dataStorageService = dataStorageService;
         _rankingApiService = rankingApiService;
         _mouseHookService = mouseHookService;
+        _dialogService = dialogService;
 
         // 初始化设备信息
         InitializeDeviceInfo();
@@ -251,16 +254,19 @@ public partial class MainWindowViewModel : ViewModelBase
     private async Task ShowAllRank()
     {
         await _logService.WriteInfoAsync("用户点击查看全国排行榜按钮");
-        // This will be handled by the view
-        await Task.CompletedTask;
+        await _dialogService.ShowAllRankDialogAsync();
     }
 
     [RelayCommand]
     private async Task ShowConfig()
     {
         await _logService.WriteInfoAsync("用户点击设置按钮");
-        // This will be handled by the view
-        await Task.CompletedTask;
+        await _dialogService.ShowConfigDialogAsync();
+
+        // Refresh main window after config changes
+        UpdateSyncTimerInterval();
+        UpdateJoinRanking();
+        await RefreshRankingAsync();
     }
 
     [RelayCommand]
