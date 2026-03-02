@@ -56,6 +56,7 @@ public partial class App : Application
         services.AddSingleton<IEncryptionService, EncryptionService>();
         services.AddSingleton<IDataStorageService, DataStorageService>();
         services.AddSingleton<IMouseHookService, MouseHookService>();
+        services.AddSingleton<IDialogService, DialogService>();
 
         // Register HttpClient for RankingApiService
         services.AddSingleton<HttpClient>();

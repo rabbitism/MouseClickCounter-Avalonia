@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -12,6 +13,8 @@ namespace MouseClickCounter.ViewModels
         private readonly IDataStorageService _dataStorageService;
         private readonly IRankingApiService _rankingApiService;
         private readonly ILogService _logService;
+
+        public event EventHandler? RequestClose;
 
         [ObservableProperty]
         private string _apiUrl = string.Empty;
@@ -104,6 +107,19 @@ namespace MouseClickCounter.ViewModels
             }
 
             await Task.CompletedTask;
+        }
+
+        [RelayCommand]
+        private async Task SaveAndClose()
+        {
+            await Save();
+            RequestClose?.Invoke(this, EventArgs.Empty);
+        }
+
+        [RelayCommand]
+        private void CloseDialog()
+        {
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
     }
 }

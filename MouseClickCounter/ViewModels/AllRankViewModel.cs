@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -12,6 +13,8 @@ namespace MouseClickCounter.ViewModels
     {
         private readonly IRankingApiService _rankingApiService;
         private readonly ILogService _logService;
+
+        public event EventHandler? RequestClose;
 
         [ObservableProperty]
         private string _statsText = "正在加载数据...";
@@ -72,6 +75,12 @@ namespace MouseClickCounter.ViewModels
         private async Task Refresh()
         {
             await LoadDataAsync();
+        }
+
+        [RelayCommand]
+        private void CloseDialog()
+        {
+            RequestClose?.Invoke(this, EventArgs.Empty);
         }
     }
 }
