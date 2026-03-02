@@ -14,5 +14,6 @@
     <Application.Styles>
         <semi:SemiTheme />
         <u-semi:SemiTheme />
+        <semi:DataGridSemiTheme />
     </Application.Styles>
 </Application>

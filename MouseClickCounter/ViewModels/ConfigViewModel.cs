@@ -2,19 +2,24 @@ using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using MouseClickCounter.Services;
+using Irihi.Avalonia.Shared.Contracts;
 using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.ViewModels
 {
-    public partial class ConfigViewModel : ViewModelBase
+    public partial class ConfigViewModel : ViewModelBase, IDialogContext
     {
         private readonly IConfigManager _configManager;
         private readonly IDataStorageService _dataStorageService;
         private readonly IRankingApiService _rankingApiService;
         private readonly ILogService _logService;
 
-        public event EventHandler? RequestClose;
+        public void Close()
+        {
+            RequestClose?.Invoke(this, null);
+        }
+
+        public event EventHandler<object?>? RequestClose;
 
         [ObservableProperty]
         private string _apiUrl = string.Empty;

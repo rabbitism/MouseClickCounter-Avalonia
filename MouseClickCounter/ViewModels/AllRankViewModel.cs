@@ -3,19 +3,18 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Irihi.Avalonia.Shared.Contracts;
 using MouseClickCounter.Services;
 using MouseClickCounter.Services.Interfaces;
 using static MouseClickCounter.Services.RankingApiService;
 
 namespace MouseClickCounter.ViewModels
 {
-    public partial class AllRankViewModel : ViewModelBase
+    public partial class AllRankViewModel : ViewModelBase, IDialogContext
     {
         private readonly IRankingApiService _rankingApiService;
         private readonly ILogService _logService;
-
-        public event EventHandler? RequestClose;
-
+        
         [ObservableProperty]
         private string _statsText = "正在加载数据...";
 
@@ -80,7 +79,14 @@ namespace MouseClickCounter.ViewModels
         [RelayCommand]
         private void CloseDialog()
         {
-            RequestClose?.Invoke(this, EventArgs.Empty);
+            RequestClose?.Invoke(this, null);
         }
+
+        public void Close()
+        {
+            RequestClose?.Invoke(this, null);
+        }
+
+        public event EventHandler<object?>? RequestClose;
     }
 }

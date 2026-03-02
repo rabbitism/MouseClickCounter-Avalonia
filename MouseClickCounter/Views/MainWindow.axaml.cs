@@ -1,10 +1,11 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using MouseClickCounter.ViewModels;
+using Ursa.Controls;
 
 namespace MouseClickCounter.Views;
 
-public partial class MainWindow : Window
+public partial class MainWindow : UrsaWindow
 {
     private MainWindowViewModel? _viewModel;
 

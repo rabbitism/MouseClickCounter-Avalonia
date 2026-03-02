@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+        Width="800"
         x:Class="MouseClickCounter.Views.AllRankDialog"
         x:DataType="vm:AllRankViewModel">
 
@@ -15,7 +16,6 @@
         <!-- 顶部工具栏 -->
         <StackPanel DockPanel.Dock="Top"
                    Orientation="Horizontal"
-                   Margin="15"
                    Spacing="15">
             <Button Content="刷新数据"
                     Command="{Binding RefreshCommand}"
@@ -49,7 +49,6 @@
                 Command="{Binding CloseDialogCommand}"
                 Width="100"
                 Height="35"
-                Margin="15"
                 HorizontalAlignment="Right" />
     </DockPanel>
 

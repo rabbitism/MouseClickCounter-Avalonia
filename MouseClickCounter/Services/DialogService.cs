@@ -37,41 +37,8 @@ namespace MouseClickCounter.Services
                     CanDragMove = true
                 };
 
-                // Get the dialog window reference before showing it
-                Window? dialogWindow = null;
-
-                // Subscribe to RequestClose event before showing dialog
-                void OnRequestClose(object? sender, EventArgs e)
-                {
-                    viewModel.RequestClose -= OnRequestClose;
-                    dialogWindow?.Close();
-                }
-
-                viewModel.RequestClose += OnRequestClose;
-
-                // Show the dialog and get the window reference
-                var mainWindow = Avalonia.Application.Current?.ApplicationLifetime is
-                    Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop
-                    ? desktop.MainWindow
-                    : null;
-
-                if (mainWindow != null)
-                {
-                    dialogWindow = new DialogWindow
-                    {
-                        Content = new ConfigDialog(),
-                        DataContext = viewModel,
-                        Title = options.Title,
-                        CanResize = false,
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                        Icon = mainWindow.Icon,
-                        Width = 500,
-                        Height = 550
-                    };
-
-                    await dialogWindow.ShowDialog(mainWindow);
-                }
-
+                await Dialog.ShowModal<ConfigDialog, ConfigViewModel>(viewModel, options: options);
+                
                 await _logService.WriteInfoAsync("Config dialog closed");
             }
             catch (Exception ex)
@@ -96,41 +63,8 @@ namespace MouseClickCounter.Services
                     CanResize = true,
                     CanDragMove = true
                 };
-
-                // Get the dialog window reference before showing it
-                Window? dialogWindow = null;
-
-                // Subscribe to RequestClose event before showing dialog
-                void OnRequestClose(object? sender, EventArgs e)
-                {
-                    viewModel.RequestClose -= OnRequestClose;
-                    dialogWindow?.Close();
-                }
-
-                viewModel.RequestClose += OnRequestClose;
-
-                // Show the dialog and get the window reference
-                var mainWindow = Avalonia.Application.Current?.ApplicationLifetime is
-                    Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop
-                    ? desktop.MainWindow
-                    : null;
-
-                if (mainWindow != null)
-                {
-                    dialogWindow = new DialogWindow
-                    {
-                        Content = new AllRankDialog(),
-                        DataContext = viewModel,
-                        Title = options.Title,
-                        CanResize = true,
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                        Icon = mainWindow.Icon,
-                        Width = 800,
-                        Height = 600
-                    };
-
-                    await dialogWindow.ShowDialog(mainWindow);
-                }
+                
+                await Dialog.ShowModal<AllRankDialog, AllRankViewModel>(viewModel, options: options);
 
                 await _logService.WriteInfoAsync("All rank dialog closed");
             }
