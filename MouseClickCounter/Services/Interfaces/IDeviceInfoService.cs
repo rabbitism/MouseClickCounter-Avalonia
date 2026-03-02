@@ -1,7 +1,6 @@
-namespace MouseClickCounter.Services.Interfaces
+namespace MouseClickCounter.Services.Interfaces;
+
+public interface IDeviceInfoService
 {
-    public interface IDeviceInfoService
-    {
-        DeviceInfoService.DeviceInfo GetDeviceInfo();
-    }
+    DeviceInfoService.DeviceInfo GetDeviceInfo();
 }

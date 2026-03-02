@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace MouseClickCounter.Views
+namespace MouseClickCounter.Views;
+
+public partial class AllRankDialog : UserControl
 {
-    public partial class AllRankDialog : UserControl
+    public AllRankDialog()
     {
-        public AllRankDialog()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -4,16 +4,39 @@
              xmlns:u-semi="https://irihi.tech/ursa/themes/semi"
              x:Class="MouseClickCounter.App"
              xmlns:local="using:MouseClickCounter"
+             xmlns:vm="clr-namespace:MouseClickCounter.ViewModels"
+             x:DataType="vm:ApplicationViewModel"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+    <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
-        <local:ViewLocator/>
+        <local:ViewLocator />
     </Application.DataTemplates>
-  
+
     <Application.Styles>
         <semi:SemiTheme />
         <u-semi:SemiTheme />
         <semi:DataGridSemiTheme />
     </Application.Styles>
+
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon
+                Icon="{OnPlatform Default=/Assets/irihi.ico, macOS=/Assets/irihi2.ico}"
+                Command="{Binding ActivateCommand}"
+                MacOSProperties.IsTemplateIcon="true"
+                ToolTipText="Mouse Click Counter - Avalonia">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem
+                            Header="显示主界面"
+                            Command="{Binding ActivateCommand}" />
+                        <NativeMenuItem
+                            Header="退出"
+                            Command="{Binding ExitCommand}" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
 </Application>

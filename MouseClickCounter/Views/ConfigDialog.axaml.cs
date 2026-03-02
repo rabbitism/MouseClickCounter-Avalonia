@@ -1,12 +1,11 @@
 using Avalonia.Controls;
 
-namespace MouseClickCounter.Views
+namespace MouseClickCounter.Views;
+
+public partial class ConfigDialog : UserControl
 {
-    public partial class ConfigDialog : UserControl
+    public ConfigDialog()
     {
-        public ConfigDialog()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

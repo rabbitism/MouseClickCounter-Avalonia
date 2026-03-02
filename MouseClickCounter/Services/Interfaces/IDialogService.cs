@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 
-namespace MouseClickCounter.Services.Interfaces
+namespace MouseClickCounter.Services.Interfaces;
+
+public interface IDialogService
 {
-    public interface IDialogService
-    {
-        Task ShowConfigDialogAsync();
-        Task ShowAllRankDialogAsync();
-    }
+    Task ShowConfigDialogAsync();
+    Task ShowAllRankDialogAsync();
 }

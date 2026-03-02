@@ -1,15 +1,14 @@
 using System;
 
-namespace MouseClickCounter.Services.Interfaces
+namespace MouseClickCounter.Services.Interfaces;
+
+public interface IMouseHookService : IDisposable
 {
-    public interface IMouseHookService : IDisposable
-    {
-        bool InstallHook();
-        void UninstallHook();
-        long GetLeftClickCount();
-        long GetRightClickCount();
-        void SetLeftClickCount(long count);
-        void SetRightClickCount(long count);
-        void ResetCounts();
-    }
+    bool InstallHook();
+    void UninstallHook();
+    long GetLeftClickCount();
+    long GetRightClickCount();
+    void SetLeftClickCount(long count);
+    void SetRightClickCount(long count);
+    void ResetCounts();
 }
