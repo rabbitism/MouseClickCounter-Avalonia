@@ -4,8 +4,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:u="https://irihi.tech/ursa"
-             mc:Ignorable="d" d:DesignWidth="500"
+             mc:Ignorable="d" d:DesignWidth="400"
              d:DesignHeight="400"
+             MaxWidth="400"
+             Width="400"
              x:Class="MouseClickCounter.Views.ConfigDialog"
              x:DataType="vm:ConfigViewModel">
     <ScrollViewer>

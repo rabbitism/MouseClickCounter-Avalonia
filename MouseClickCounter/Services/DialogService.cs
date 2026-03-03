@@ -59,7 +59,7 @@ public class DialogService : IDialogService
                 Title = "全国省份排行榜",
                 Button = DialogButton.None,
                 StartupLocation = Avalonia.Controls.WindowStartupLocation.CenterOwner,
-                CanResize = true,
+                CanResize = false,
                 CanDragMove = true
             };
                 

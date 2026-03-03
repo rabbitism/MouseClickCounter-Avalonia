@@ -5,7 +5,7 @@
              x:Class="MouseClickCounter.App"
              xmlns:vm="clr-namespace:MouseClickCounter.ViewModels"
              x:DataType="vm:ApplicationViewModel"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Light">
     <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Styles>

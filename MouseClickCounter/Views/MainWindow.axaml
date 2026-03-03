@@ -26,7 +26,7 @@
     </u:UrsaWindow.LeftContent>
     <u:UrsaWindow.RightContent>
         <StackPanel Orientation="Horizontal">
-            <u:ThemeToggleButton IsThreeState="True" />
+            <u:ThemeToggleButton IsThreeState="False" />
             <u:IconButton
                 Icon="{DynamicResource SemiIconSetting}"
                 Theme="{DynamicResource BorderlessIconButton}"
