@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Irihi.Avalonia.Shared.Contracts;
+using MouseClickCounter.Models;
 using MouseClickCounter.Services;
 using MouseClickCounter.Services.Interfaces;
 

@@ -3,6 +3,7 @@ using System.IO;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using MouseClickCounter.Models;
 using MouseClickCounter.Services.Interfaces;
 
 namespace MouseClickCounter.Services;
@@ -168,12 +169,4 @@ public class ConfigManager : IConfigManager
         }
         await SaveConfigAsync();
     }
-}
-
-internal class ConfigData
-{
-    public string ApiUrl { get; set; } = ConfigManager.DEFAULT_SERVER_API;
-    public bool JoinRanking { get; set; }
-    public bool RunOnStartup { get; set; }
-    public int SyncInterval { get; set; } = 5;
 }

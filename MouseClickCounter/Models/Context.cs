@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace MouseClickCounter.Services;
+namespace MouseClickCounter.Models;
 
 [JsonSerializable(typeof(ProvinceRankingResponse))]
 [JsonSerializable(typeof(ProvinceRankingItem))]
